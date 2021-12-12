@@ -9,15 +9,13 @@ const baseURL = process.env.REACT_APP_BASEURL;
 const params = {
   ts: '1',
   apikey: PUBLIC_KEY,
-  hash: hash
+  hash
 }
 
 export function getComicsByCharacter(characterId) {
-  return axios.get(`${baseURL}characters/${characterId}/comics?ts=1&apikey=${PUBLIC_KEY}&hash=${hash}`)
+  return axios.get(`${baseURL}characters/${characterId}/comics?`, { params })
     .then(response => {
- 
-      const res = response.data.data.results;
-      return res;
+      return response.data.data.results;
     })
     .catch((error) => {
       console.log(error);
@@ -26,23 +24,20 @@ export function getComicsByCharacter(characterId) {
 
 export function getCharacters() {
 
-  return axios.get(`${baseURL}characters?`, {params})
+  return axios.get(`${baseURL}characters?`, { params })
     .then(response => {
-      const res = response.data.data.results;
-      return res;
+      return response.data.data.results;
     })
     .catch(error => {
       console.log(error);
     })
-
 }
 
 export function getCharacterByName(nameStartsWith) {
 
-  return axios.get(`${baseURL}characters?nameStartsWith=${nameStartsWith}&`, {params})
+  return axios.get(`${baseURL}characters?nameStartsWith=${nameStartsWith}&`, { params })
     .then(response => {
-      const res = response.data.data.results;
-      return res;
+      return response.data.data.results;
     })
     .catch(error => {
       console.log(error);

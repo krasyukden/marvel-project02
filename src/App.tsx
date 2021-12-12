@@ -11,18 +11,18 @@ import ComicsPage from './ComicsPage';
 import HomePage from './HomePage';
 
 
-function App() {
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path='/comics/:charachterId' component={ComicsPage} />
-        <Route path='*' component={NotFoundPage} />
-      </Switch>
-    </Router>
-
-
-  );
+class App extends React.Component {
+  render(): JSX.Element {
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path='/comics/:charachterId' component={ComicsPage} />
+          <Route path='*' component={NotFoundPage} />
+        </Switch>
+      </Router>
+    )
+  }
 }
 
 export default App;

@@ -1,9 +1,13 @@
 import React from 'react';
-import preloader from './assets/Spinner-1s-200px.svg'
-import styles from './Preloader.module.css'
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const Preloader = () => {
-  return <img className={styles.loader} src={preloader} />
+  return (
+  <Box sx={{ position: 'fixed', top: '50%',  left: '50%'}}>
+      <CircularProgress />
+    </Box>
+  )
 }
 
 export default Preloader;

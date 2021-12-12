@@ -10,29 +10,29 @@ import styles from './HomePage.module.css';
 import logo from './common/Marvel_Studios_logo.png';
 
 interface HomeState {
-  heroes: any[],
+  heroes: Array<Heroes>,
   loading: boolean,
   inputValue: string,
   location: any,
   history: any
-
-}
-
-interface ComicsProps {
-  match: {
-    params: {
-      charachterId: string;
-    }
-  }
 }
 
 interface HomeProps {
-  heroes: any[],
+  heroes: Array<Heroes>,
   loading: boolean,
   inputValue: string
-
-
 }
+
+interface Heroes {
+  id: number,
+  name: string,
+  thumbnail: {
+    path: string,
+    extension: string
+  },
+  description: string
+}
+
 
 class HomePage extends React.Component<HomeState, HomeProps> {
   constructor(props: any) {
@@ -58,7 +58,7 @@ class HomePage extends React.Component<HomeState, HomeProps> {
       getCharacterByName(nameCharacter).then((heroes: any) => {
         this.setState({
           inputValue: nameCharacter,
-          heroes: heroes,
+          heroes,
           loading: false
 
         })
@@ -80,13 +80,13 @@ class HomePage extends React.Component<HomeState, HomeProps> {
     this.loadFromServer()
   }
 
-  componentDidUpdate(prevProps: any) {
+  componentDidUpdate(prevProps: any): void {
     if (this.props.location !== prevProps.location) {
       this.loadFromServer();
     }
   }
 
-  handleSubmit() {
+  handleSubmit(): void {
     if (this.state.inputValue) {
       this.props.history.push(`?query=${this.state.inputValue}`)
     } else {
@@ -94,7 +94,7 @@ class HomePage extends React.Component<HomeState, HomeProps> {
     }
   }
 
-  handleChange(e: any) {
+  handleChange(e: any): void {
     const target = e.target;
     const value: string = target.value;
     this.setState({
@@ -102,9 +102,10 @@ class HomePage extends React.Component<HomeState, HomeProps> {
     })
   }
 
-  render() {
-    return <>{ }
-      {this.state.loading ? <Preloader /> :
+  render(): JSX.Element {
+    const { loading } = this.state;
+    return <div>
+      {loading ? <Preloader /> :
         <div className={styles.wrapper}>
           <img src={logo} alt='logo' className={styles.logo} />
           <div className={styles.wrapperInput}>
@@ -117,7 +118,7 @@ class HomePage extends React.Component<HomeState, HomeProps> {
               Search</Button>
           </div>
           <div className={styles.wrapperHeroes}>
-            {this.state.heroes.slice(0, 5).map((heroes: any) => {
+            {this.state.heroes.slice(0, 5).map((heroes: Heroes) => {
               return <div key={heroes.id}>
                 <div className={styles.hero}>
                   <Avatar alt="Photo" sx={{ width: 100, height: 100, margin: 5 }}
@@ -133,7 +134,7 @@ class HomePage extends React.Component<HomeState, HomeProps> {
             })}
           </div>
         </div>}
-    </>
+    </div>
   }
 
 }
