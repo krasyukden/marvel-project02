@@ -1,6 +1,8 @@
+//task 2,3
+
 import React from 'react';
 import { matchPath } from "react-router";
-import styles from './ComicsPage.module.css';
+import styles from './comicsPage.module.css';
 import { getComicsByCharacter } from './api';
 import Preloader from './Preloader';
 

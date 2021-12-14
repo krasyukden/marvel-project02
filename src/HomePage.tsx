@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import { NavLink } from 'react-router-dom';
 import { getCharacterByName, getCharacters } from './api';
 import Preloader from './Preloader';
-import styles from './HomePage.module.css';
+import styles from './homePage.module.css';
 import logo from './common/Marvel_Studios_logo.png';
 
 interface HomeState {

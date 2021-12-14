@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 const Preloader = () => {
   return (
-  <Box sx={{ position: 'fixed', top: '50%',  left: '50%'}}>
+    <Box sx={{ position: 'fixed', top: '50%',  left: '50%'}}>
       <CircularProgress />
     </Box>
   )
