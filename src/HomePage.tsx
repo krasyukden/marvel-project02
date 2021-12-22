@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { resolve } from 'dns';
 import React from 'react';
+import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import { NavLink } from 'react-router-dom';
@@ -8,22 +9,24 @@ import { getCharacterByName, getCharacters } from './api';
 import Preloader from './Preloader';
 import styles from './homePage.module.css';
 import logo from './common/Marvel_Studios_logo.png';
+import { loadingHeroesActionCreatorByName } from './redux/heroesReduser';
+import { HeroesInitialState, loadingHeroesActionCreator } from './redux/heroesReduser';
 
-interface HomeState {
+export interface HomeState {
   heroes: Array<Heroes>,
   loading: boolean,
   inputValue: string,
   location: any,
-  history: any
+  history: any,
+  loadingHeroesDispatchDefault: any,
+  loadingHeroesDispatchByName: any
 }
 
-interface HomeProps {
-  heroes: Array<Heroes>,
-  loading: boolean,
+export interface HomeProps {
   inputValue: string
 }
 
-interface Heroes {
+export interface Heroes {
   id: number,
   name: string,
   thumbnail: {
@@ -33,15 +36,11 @@ interface Heroes {
   description: string
 }
 
-
-class HomePage extends React.Component<HomeState, HomeProps> {
+class HomePage extends React.Component<HomeState, HomeProps, HeroesInitialState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      heroes: [],
-      loading: true,
       inputValue: ''
-
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -53,26 +52,11 @@ class HomePage extends React.Component<HomeState, HomeProps> {
     const params = new URLSearchParams(search);
     const nameCharacter = params.get('query');
 
-
     if (nameCharacter) {
-      getCharacterByName(nameCharacter).then((heroes: any) => {
-        this.setState({
-          inputValue: nameCharacter,
-          heroes,
-          loading: false
-
-        })
-      })
+      this.props.loadingHeroesDispatchByName(nameCharacter);
+      this.setState({ inputValue: nameCharacter })
     } else {
-
-      getCharacters().then((heroes: any) => {
-
-        this.setState({
-          heroes,
-          loading: false
-
-        })
-      })
+      this.props.loadingHeroesDispatchDefault()
     }
   }
 
@@ -103,7 +87,7 @@ class HomePage extends React.Component<HomeState, HomeProps> {
   }
 
   render(): JSX.Element {
-    const { loading } = this.state;
+    const { loading } = this.props;
     return <div>
       {loading ? <Preloader /> :
         <div className={styles.wrapper}>
@@ -118,7 +102,7 @@ class HomePage extends React.Component<HomeState, HomeProps> {
               Search</Button>
           </div>
           <div className={styles.wrapperHeroes}>
-            {this.state.heroes.slice(0, 5).map((heroes: Heroes) => {
+            {this.props.heroes.slice(0, 5).map((heroes: Heroes) => {
               return <div key={heroes.id}>
                 <div className={styles.hero}>
                   <Avatar alt="Photo" sx={{ width: 100, height: 100, margin: 5 }}
@@ -136,9 +120,24 @@ class HomePage extends React.Component<HomeState, HomeProps> {
         </div>}
     </div>
   }
-
 }
 
-export default HomePage;
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    loadingHeroesDispatchDefault: () => dispatch(loadingHeroesActionCreator()),
+    loadingHeroesDispatchByName: (nameCharacter: string) => dispatch(loadingHeroesActionCreatorByName(nameCharacter))
+  }
+}
+
+const mapStateToProps = (state: any) => {
+  return {
+    heroes: state.heroesPage.heroes,
+    loading: state.heroesPage.loading,
+    error: state.heroesPage.error
+  }
+}
+const HomePageContainer = connect(mapStateToProps, mapDispatchToProps)(HomePage)
+
+export default HomePageContainer;
 
 

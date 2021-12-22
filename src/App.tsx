@@ -7,8 +7,11 @@ import {
   Link
 } from "react-router-dom";
 import NotFoundPage from './NotFoundPage';
-import ComicsPage from './ComicsPage';
+import ComicsPageContainer from './ComicsPage';
 import HomePage from './HomePage';
+import store from "./App";
+import { Provider } from 'react-redux';
+import HomePageContainer from './HomePage';
 
 
 class App extends React.Component {
@@ -16,8 +19,8 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path='/comics/:charachterId' component={ComicsPage} />
+          <Route exact path="/" component={HomePageContainer} />
+          <Route path='/comics/:charachterId' component={ComicsPageContainer} />
           <Route path='*' component={NotFoundPage} />
         </Switch>
       </Router>
