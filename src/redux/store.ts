@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { applyMiddleware, combineReducers, createStore, compose } from "redux";
-import { comicsReducer, GET_COMICS_BY_ID, LOAD_COMICS } from './comicsReduser';
+import { comicsReducer } from './comicsReduser';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { heroesReducer } from './heroesReduser';
@@ -10,6 +10,8 @@ import { rootSaga } from '../rootSaga';
 export const sagaMiddleware = createSagaMiddleware();
 
 const composeEncancer = composeWithDevTools({ trace: true });
+
+export type Reducers = ReturnType<typeof reducers>
 
 const reducers = combineReducers({
   comicsPage: comicsReducer,

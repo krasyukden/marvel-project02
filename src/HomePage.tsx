@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { resolve } from 'dns';
 import React from 'react';
+import { Dispatch, Action, AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
@@ -9,8 +10,7 @@ import { getCharacterByName, getCharacters } from './api';
 import Preloader from './Preloader';
 import styles from './homePage.module.css';
 import logo from './common/Marvel_Studios_logo.png';
-import { loadingHeroesActionCreatorByName } from './redux/heroesReduser';
-import { HeroesInitialState, loadingHeroesActionCreator } from './redux/heroesReduser';
+import { HeroesInitialState, loadingHeroesActionCreator, HeroesState } from './redux/heroesReduser';
 
 export interface HomeState {
   heroes: Array<Heroes>,
@@ -18,8 +18,7 @@ export interface HomeState {
   inputValue: string,
   location: any,
   history: any,
-  loadingHeroesDispatchDefault: any,
-  loadingHeroesDispatchByName: any
+  loadingHeroesDispatch: (id:string) => void 
 }
 
 export interface HomeProps {
@@ -53,10 +52,10 @@ class HomePage extends React.Component<HomeState, HomeProps, HeroesInitialState>
     const nameCharacter = params.get('query');
 
     if (nameCharacter) {
-      this.props.loadingHeroesDispatchByName(nameCharacter);
+      this.props.loadingHeroesDispatch(nameCharacter);
       this.setState({ inputValue: nameCharacter })
     } else {
-      this.props.loadingHeroesDispatchDefault()
+      this.props.loadingHeroesDispatch('')
     }
   }
 
@@ -88,6 +87,7 @@ class HomePage extends React.Component<HomeState, HomeProps, HeroesInitialState>
 
   render(): JSX.Element {
     const { loading } = this.props;
+    const { heroes } = this.props;
     return <div>
       {loading ? <Preloader /> :
         <div className={styles.wrapper}>
@@ -102,7 +102,7 @@ class HomePage extends React.Component<HomeState, HomeProps, HeroesInitialState>
               Search</Button>
           </div>
           <div className={styles.wrapperHeroes}>
-            {this.props.heroes.slice(0, 5).map((heroes: Heroes) => {
+            {heroes.slice(0, 5).map((heroes: Heroes) => {
               return <div key={heroes.id}>
                 <div className={styles.hero}>
                   <Avatar alt="Photo" sx={{ width: 100, height: 100, margin: 5 }}
@@ -122,14 +122,13 @@ class HomePage extends React.Component<HomeState, HomeProps, HeroesInitialState>
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch:  Dispatch) => {
   return {
-    loadingHeroesDispatchDefault: () => dispatch(loadingHeroesActionCreator()),
-    loadingHeroesDispatchByName: (nameCharacter: string) => dispatch(loadingHeroesActionCreatorByName(nameCharacter))
+    loadingHeroesDispatch: (nameCharacter: string) => dispatch(loadingHeroesActionCreator(nameCharacter))
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: HeroesState) => {
   return {
     heroes: state.heroesPage.heroes,
     loading: state.heroesPage.loading,

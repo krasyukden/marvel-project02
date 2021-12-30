@@ -21,7 +21,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "indent": ["error", 2],
+        //"indent": ["error", 2],
 		"comma-dangle": ["error", "never"],
 		"func-call-spacing": ["error", "never"],
 		"max-len": ["error", { "code": 120, "ignoreComments": true }],

@@ -1,15 +1,21 @@
-import { ComicsSection } from "../ComicsPage";
+import { ComicsSection, LoadComicsAction } from "../ComicsPage";
 
-export const LOAD_COMICS = 'LOAD_COMICS';
-export const GET_COMICS_BY_ID = 'GET_COMICS_BY_ID';
-export const LOADING = 'LOADING';
-export const ERROR = 'ERROR';
+export const GET_COMICS_REQUEST = 'GET_COMICS_REQUEST';
+export const GET_COMICS_SUCCESS = 'GET_COMICS_SUCCESS';
+export const GET_COMICS_ERROR = 'GET_COMICS_ERROR';
 
-interface ComicsInitialState {
+export interface ComicsInitialState {
   comics: Array<ComicsSection>,
   loading: boolean,
   error: Error | null
 }
+
+export interface ComicsState {
+  heroes: Array<ComicsSection>,
+  loading: boolean,
+  error: Error | null,
+  comicsPage: { comics: Array<ComicsSection>; loading: boolean; error: null; }
+  }
 
 const initialState = {
   comics: [],
@@ -17,35 +23,35 @@ const initialState = {
   error: null
 }
 
-export const comicsReducer = (state: ComicsInitialState = initialState, action: any) => {
+export const comicsReducer = (state: ComicsInitialState = initialState, action: LoadComicsAction | any) => {
   switch (action.type) {
-    case LOAD_COMICS:
+    case GET_COMICS_REQUEST:
       return {
         state: initialState,
         loading: true,
-        error: ''
+        error: false
       }
-    case GET_COMICS_BY_ID:
+    case GET_COMICS_SUCCESS:
       return {
         ...state,
         comics: action.payload,
         loading: false,
-        error: ''
+        error: false
       }
-    case ERROR:
+    case GET_COMICS_ERROR:
       return {
         state: initialState,
         loading: false,
-        error: 'ERROR'
+        error: true
       }
     default:
       return state;
   }
 }
 
-export const comicsActionCreatorById = (comics: Array<ComicsSection>) => ({ type: GET_COMICS_BY_ID, payload: comics })
-export const loadComicsActionCreator = (characterId: string) => ({ type: LOAD_COMICS, payload: characterId })
-export const errorActionCreator = (error: Error | null | any) => ({ type: ERROR, payload: error })
+export const comicsActionCreatorById = (comics: Array<ComicsSection>) => ({ type: GET_COMICS_SUCCESS, payload: comics })
+export const loadComicsActionCreator = (characterId: string) => ({ type: GET_COMICS_REQUEST, payload: characterId })
+export const errorActionCreator = (error: Error | null | any) => ({ type: GET_COMICS_ERROR, payload: error })
 
 
 
