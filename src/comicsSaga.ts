@@ -13,8 +13,8 @@ import { sagaMiddleware } from "./redux/store";
 
 function* workerComicsSaga(action: LoadComicsAction): Generator {
   try {
-    const comics: any = yield call(getComicsByCharacter, action.payload);
-    yield put(comicsActionCreatorById(comics))
+    const comics = yield call(getComicsByCharacter, action.payload);
+    yield put(comicsActionCreatorById(comics as ComicsSection[]))
   } catch (error) {
     yield put(errorActionCreator(error));
   }

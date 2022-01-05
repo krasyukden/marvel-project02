@@ -5,7 +5,7 @@ import { Dispatch, Action, AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import { NavLink } from 'react-router-dom';
+import { NavLink, RouteComponentProps } from 'react-router-dom';
 import { getCharacterByName, getCharacters } from './api';
 import Preloader from './Preloader';
 import styles from './homePage.module.css';
@@ -16,8 +16,8 @@ export interface HomeState {
   heroes: Array<Heroes>,
   loading: boolean,
   inputValue: string,
-  location: any,
-  history: any,
+  location: RouteComponentProps['location'],
+  history: RouteComponentProps['history']
   loadingHeroesDispatch: (id:string) => void 
 }
 
@@ -86,8 +86,7 @@ class HomePage extends React.Component<HomeState, HomeProps, HeroesInitialState>
   }
 
   render(): JSX.Element {
-    const { loading } = this.props;
-    const { heroes } = this.props;
+    const { loading, heroes } = this.props;
     return <div>
       {loading ? <Preloader /> :
         <div className={styles.wrapper}>

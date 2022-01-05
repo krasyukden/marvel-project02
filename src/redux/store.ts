@@ -11,7 +11,7 @@ export const sagaMiddleware = createSagaMiddleware();
 
 const composeEncancer = composeWithDevTools({ trace: true });
 
-export type Reducers = ReturnType<typeof reducers>
+
 
 const reducers = combineReducers({
   comicsPage: comicsReducer,
@@ -24,6 +24,7 @@ const store = createStore(
     applyMiddleware(sagaMiddleware)
   )
 );
+export type RootState = ReturnType<typeof store.getState>
 
 sagaMiddleware.run(rootSaga);
 

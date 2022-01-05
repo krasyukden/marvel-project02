@@ -19,11 +19,11 @@ export interface ComicsProps {
   comics: Array<ComicsSection>,
   loading: boolean,
   characterId: string,
-  loadComicsDispatch:  (characterId: string)=>void
+  loadComicsDispatch: (characterId: string) => void
 }
-export interface LoadComicsAction{
+export interface LoadComicsAction {
   type: string,
-  payload: string  
+  payload: string
 }
 
 export interface ComicsSection {
@@ -53,8 +53,7 @@ class ComicsPage extends React.Component<ComicsProps> {
   }
 
   render(): JSX.Element {
-    const { loading } = this.props;
-    const { comics } = this.props;
+    const { loading, comics } = this.props;
     return <div>
       {loading ? <Preloader /> :
         <div className={styles.wrapper}>
