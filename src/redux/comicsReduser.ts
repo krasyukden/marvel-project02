@@ -1,5 +1,4 @@
 import { ComicsSection, LoadComicsAction } from "../ComicsPage";
-
 export const GET_COMICS_REQUEST = 'GET_COMICS_REQUEST';
 export const GET_COMICS_SUCCESS = 'GET_COMICS_SUCCESS';
 export const GET_COMICS_ERROR = 'GET_COMICS_ERROR';
@@ -15,7 +14,7 @@ export interface ComicsState {
   loading: boolean,
   error: Error | null,
   comicsPage: { comics: Array<ComicsSection>; loading: boolean; error: null; }
-  }
+}
 
 const initialState = {
   comics: [],
@@ -23,7 +22,7 @@ const initialState = {
   error: null
 }
 
-export const comicsReducer = (state: ComicsInitialState = initialState, action: LoadComicsAction | any) => {
+export const comicsReducer = (state: ComicsInitialState = initialState, action: LoadComicsAction) => {
   switch (action.type) {
     case GET_COMICS_REQUEST:
       return {
