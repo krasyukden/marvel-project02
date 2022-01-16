@@ -34,12 +34,15 @@ export interface HomeProps {
 export interface Heroes {
   id: number,
   name: string,
-  thumbnail: {
-    path: string,
-    extension: string
-  },
+  thumbnail: Thumbnail,
   description: string
 }
+
+export interface Thumbnail {
+  path: string,
+  extension: string
+}
+
 
 const HomePage = () => {
   const heroes = useSelector((state: Reducers | HomeState) => state.heroesPage.heroes);
@@ -96,15 +99,15 @@ const HomePage = () => {
             Search</Button>
         </div>
         <div className={styles.wrapperHeroes}>
-          {heroes.slice(0, 5).map((heroes: Heroes) => {
-            return <div key={heroes.id}>
+          {heroes.slice(0, 5).map((hero: Heroes) => {
+            const heroesImage = `${hero.thumbnail.path}.${hero.thumbnail.extension}`
+            return <div key={hero.id}>
               <div className={styles.hero}>
                 <Avatar alt="Photo" sx={{ width: 100, height: 100, margin: 5 }}
-                  className={styles.avatarStyle} src={heroes.thumbnail.path != null
-                    ? `${heroes.thumbnail.path}.${heroes.thumbnail.extension}` : 'Photo'} />
-                <div className={styles.name}>{heroes.name}</div>
-                <div className={styles.description} >{heroes.description}</div>
-                <NavLink to={`/comics/${heroes.id}`} style={{ textDecoration: 'none' }}> {<Button variant="contained"
+                  className={styles.avatarStyle} src={heroesImage} />
+                <div className={styles.name}>{hero.name}</div>
+                <div className={styles.description} >{hero.description}</div>
+                <NavLink to={`/comics/${hero.id}`} style={{ textDecoration: 'none' }}> {<Button variant="contained"
                   sx={{ marginRight: 5, textDecoration: 'none' }}
                   type="submit"  >See more</Button>} </NavLink>
               </div>
