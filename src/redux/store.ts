@@ -7,11 +7,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { heroesReducer } from './heroesReduser';
 import { rootSaga } from '../rootSaga';
 
+
 export const sagaMiddleware = createSagaMiddleware();
 
 const composeEncancer = composeWithDevTools({ trace: true });
 
-
+export type Reducers = ReturnType<typeof reducers>
 
 const reducers = combineReducers({
   comicsPage: comicsReducer,
@@ -20,11 +21,10 @@ const reducers = combineReducers({
 
 const store = createStore(
   reducers,
-  composeEncancer( 
+  composeEncancer(
     applyMiddleware(sagaMiddleware)
   )
 );
-export type RootState = ReturnType<typeof store.getState>
 
 sagaMiddleware.run(rootSaga);
 
